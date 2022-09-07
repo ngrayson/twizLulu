@@ -20,5 +20,5 @@
 #define ENABLE_RGB_MATRIX_BAND_SAT
 #define ENABLE_RGB_MATRIX_BAND_VAL
 
-// #define EE_HANDLS
+// #define EE_HANDS
 // #define MASTER_LEFT
