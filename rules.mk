@@ -1,0 +1,9 @@
+SERIAL_DRIVER = vendor
+WS2812_DRIVER = vendor
+# Bootloader selection
+BOOTLOADER = rp2040
+# RGB
+RGB_MATRIX_ENABLE = yes
+RGB_MATRIX_DRIVER = WS2812
+# Split
+SPLIT_KEYBOARD = yes
