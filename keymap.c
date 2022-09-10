@@ -37,6 +37,10 @@ uint16_t alt_tab_timer = 0;
 #define FOC_3 LT(0,KC_D)
 #define FOC_4 LT(0,KC_F)
 #define AUD_5 LT(0,KC_H) // 6 on tap, toggle audio source on hold
+#define TD_RD LT(0,KC_G) // macro for labelling in gmail
+#define WT_SV LT(0,KC_J) // macro for labelling in gmail
+
+
 #define DRK_BANG LT(0,KC_Z)
 #define VIS_HASH LT(0,KC_C)
 #define TAB_RES LT(0,KC_ESC)
@@ -91,9 +95,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT(
   TAB_RES,TABL,    TABCLOSE,TABR,    QUIT,     RE_CACHE,                   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-  PIK_WIN,FOC_1,   FOC_2,   FOC_3,   FOC_4,    AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
+  ALT_TAB,FOC_1,   FOC_2,   FOC_3,   FOC_4,    AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
   _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______,                    _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______,  _______,
-  _______, KC_EXLM, KC_AT,  VIS_HASH, KC_DLR,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  KC_LBRC, KC_RBRC,  KC_BSLASH,
+  _______, DRK_BANG,KC_AT,  VIS_HASH, KC_DLR,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  KC_LBRC, KC_RBRC,  KC_BSLASH,
                              _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 /* RAISE
@@ -112,8 +116,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_RAISE] = LAYOUT(
-  RGB_MOD, RGB_RMOD,RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD,                     _______, _______, _______, _______, _______, QK_BOOT,
-  _______, VDLEFT,  SNAPUP,  VDRIGHT,  _______, _______,                     _______, _______, CUP,     _______, _______, KC_WAKE,
+  RGB_MOD, RGB_RMOD,RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD,                     TD_RD,   _______, _______, _______, _______, QK_BOOT,
+  _______, VDLEFT,  SNAPUP,  VDRIGHT,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
   _______, SNAPLEFT,MAXIMIZE,SNAPRIGHT,_______, _______,                     _______, CLFT,    CDN,     CRGT,    _______, KC_PWR,
   _______, VDTVIEW, SNAPDOWN,LOCK,     _______, _______,  RGB_TOG, RGB_MOD,  _______, _______, _______, _______, _______, KC_SLEP,
                              _______,  KVMONE,  KVMTWO,   _______, _______,  _______, _______, _______
@@ -296,6 +300,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               tap_code16(KC_HASH); // Intercept tap function to send Ctrl-C
           } else if (record->event.pressed) {
               tap_code16(LGUI(LALT(KC_V))); // Intercept hold function to send Ctrl-V
+          }
+          return false;
+        case TD_RD:
+          if (record->tap.count && record ->event.pressed){
+            SEND_STRING("vto-do\n");
+          }
+          else if (record->event.pressed){
+            SEND_STRING("vread-through\n");
+          }
+          return false;
+        case WT_SV:
+          if (record->tap.count && record -> event.pressed){
+            SEND_STRING("vwaiting\n");
+          }
+          else if (record->event.pressed){
+              SEND_STRING("vsave\n");
           }
           return false;
     }
