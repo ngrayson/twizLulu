@@ -39,12 +39,15 @@ uint16_t alt_tab_timer = 0;
 #define AUD_5 LT(0,KC_H) // 6 on tap, toggle audio source on hold
 #define TD_RD LT(0,KC_G) // macro for labelling in gmail
 #define WT_SV LT(0,KC_J) // macro for labelling in gmail
+#define ABRC LT(0,KC_K) // Brackets (ambidexterous)
+#define LNKPST LT(0,KC_L) // hyperlink and paste clipboard
 
 
 #define DRK_BANG LT(0,KC_Z)
 #define VIS_HASH LT(0,KC_C)
 #define TAB_RES LT(0,KC_ESC)
-#define ALT_TAB LT(0, KC_F22)
+#define ALT_TAB LT(0, KC_F22) // alt tab with timeout functionality
+#define SHALTAB LT(0, KC_F21) // when held: shift, when tapped: alt tab with timeout functionality
 #define KVMONE LT(0,KC_LGUI)
 #define KVMTWO LT(0,KC_RGUI)
 
@@ -63,6 +66,7 @@ uint16_t alt_tab_timer = 0;
 #define PIK_WIN LCA(KC_TAB)
 #define VDTVIEW LGUI(KC_TAB)
 #define SH_TAB LSFT_T(KC_TAB)
+#define SSNIP LGUI(LSFT(KC_S)) // GUI+SHIFT+S for snipping tool
 #define SH_SLS RSFT_T(KC_SLSH)
 
 #define CLFT LCTL(KC_LEFT)
@@ -71,12 +75,25 @@ uint16_t alt_tab_timer = 0;
 #define CDN LCTL(KC_DOWN)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
+/* QWERTY
+ * ,-----------------------------------------.                    ,-----------------------------------------.
+ * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |                    |  F7  |  F8  |  F9  | F10  | F11  | F12  |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |   `  |   !  |   @  |   #  |   $  |   %  |-------.    ,-------|   ^  |   &  |   *  |   (  |   )  |   -  |
+ * |------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |-------|    |-------|      |   _  |   +  |   {  |   }  |   |  |
+ * `-----------------------------------------/       /     \      \-----------------------------------------'
+ *                   | LAlt | LGUI |LOWER | /Space  /       \Enter \  |RAISE |BackSP| RGUI |
+ *                   |      |      |      |/       /         \      \ |      |      |      |
+ *                   `----------------------------'           '------''--------------------'
+ */
  [_QWERTY] = LAYOUT(
   ES_TSK,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   SH_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_MPLY,  KC_RBRC,  KC_N,    KC_M,    COM_PR,  DOT_PR,  KC_SLSH, SH_SLS,
+  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  ABRC,    KC_MPLY,  KC_N,    KC_M,    COM_PR,  DOT_PR,  KC_SLSH, SH_SLS,
                             RAISE,    KC_LALT, LOWER, KC_SPC,  KC_BSPC,  KC_ENT,  KC_RGUI, KC_DELETE
 ),
 /* LOWER
@@ -94,10 +111,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                   `----------------------------'           '------''--------------------'
  */
 [_LOWER] = LAYOUT(
-  TAB_RES,TABL,    TABCLOSE,TABR,    QUIT,     RE_CACHE,                   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-  ALT_TAB,FOC_1,   FOC_2,   FOC_3,   FOC_4,    AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
-  _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______,                    _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______,  _______,
-  _______, DRK_BANG,KC_AT,  VIS_HASH, KC_DLR,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  KC_LBRC, KC_RBRC,  KC_BSLASH,
+  TAB_RES, TABL,    TABCLOSE,TABR,    QUIT,    RE_CACHE,                   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
+  _______, FOC_1,   FOC_2,   FOC_3,   FOC_4,   AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
+  SHALTAB, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  SSNIP,                      _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______,  _______,
+  _______, DRK_BANG,KC_AT,   VIS_HASH,LNKPST,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  _______, KC_BSLASH,_______,
                              _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 /* RAISE
@@ -119,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   RGB_MOD, RGB_RMOD,RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD,                     TD_RD,   _______, _______, _______, _______, QK_BOOT,
   _______, VDLEFT,  SNAPUP,  VDRIGHT,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
   _______, SNAPLEFT,MAXIMIZE,SNAPRIGHT,_______, _______,                     _______, CLFT,    CDN,     CRGT,    _______, KC_PWR,
-  _______, VDTVIEW, SNAPDOWN,LOCK,     _______, _______,  RGB_TOG, RGB_MOD,  _______, _______, _______, _______, _______, KC_SLEP,
+  _______, VDTVIEW, SNAPDOWN,LOCK,     _______, _______,  RGB_TOG, KC_E   ,  _______, _______, _______, _______, _______, KC_SLEP,
                              _______,  KVMONE,  KVMTWO,   _______, _______,  _______, _______, _______
 ),
 /* ADJUST
@@ -164,6 +181,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } else{
           }
           return false;
+        case LNKPST:
+          if (record->event.pressed) {
+              SEND_STRING(SS_LCTL("k") SS_DELAY(20) SS_LCTL("v"));
+          } else {
+          }
+          return false;
         case ALT_TAB:
             if (record->event.pressed) {
                 if (!is_alt_tab_active) {
@@ -171,16 +194,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     register_code(KC_LALT);
                 }
                 alt_tab_timer = timer_read();
-                register_code(KC_TAB);
+                tap_code16(KC_TAB);
             } else {
                 unregister_code(KC_TAB);
             }
             break;
+        case SHALTAB:
+          if (record->tap.count && record->event.pressed) {
+             if (record->event.pressed) { // alt tab timer active
+                if (!is_alt_tab_active) {
+                    is_alt_tab_active = true;
+                    register_code(KC_LALT);
+                }
+                alt_tab_timer = timer_read();
+                tap_code16(KC_TAB);
+            } else {
+                unregister_code(KC_TAB);
+            }
+          } else if (record->event.pressed) {
+              tap_code16(KC_LSFT); // Intercept hold function to send Ctrl-V
+          }
+          return false;
         case ES_TSK:
           if (record->tap.count && record->event.pressed) {
               tap_code16(KC_ESC); // Intercept tap function to send Ctrl-C
           } else if (record->event.pressed) {
               tap_code16(LCTL(LSFT(KC_ESC))); // Intercept hold function to send Ctrl-V
+          }
+          return false;
+
+        case ABRC:
+          if (record->tap.count && record->event.pressed) {
+              tap_code16(KC_LBRC); // Intercept tap function to send Ctrl-C
+          } else if (record->event.pressed) {
+              tap_code16(KC_RBRC); // Intercept hold function to send Ctrl-V
           }
           return false;
         case DOT_PR:
@@ -335,8 +382,8 @@ void matrix_scan_user(void) {
 // rotary encoders
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {
-        if(IS_LAYER_ON(_RAISE)  ){
+    if (index == 0) { // unused atm
+     /*   if(IS_LAYER_ON(_RAISE)  ){
             if (clockwise) {
                 rgb_matrix_increase_hue();
             } else {
@@ -354,13 +401,13 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             } else{
                 tap_code(KC_PGDN);
             }
-        }
+        }*/
     } else if (index == 1) {
          if(IS_LAYER_ON(_RAISE)  ){
             if (clockwise) {
-                rgb_matrix_increase_sat();
+                tap_code(KC_J);
             } else {
-                rgb_matrix_decrease_sat();
+                tap_code(KC_K);
             }
         }else if(IS_LAYER_ON(_LOWER)){
             if (clockwise){
@@ -370,9 +417,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             }
         }else{
             if (clockwise) {
-                tap_code(KC_MNXT);
+                tap_code(KC_VOLU);
             } else {
-                tap_code(KC_MPRV);
+                tap_code(KC_VOLD);
             }
         }
     }
