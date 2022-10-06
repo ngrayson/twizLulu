@@ -68,6 +68,7 @@ uint16_t alt_tab_timer = 0;
 #define SH_TAB LSFT_T(KC_TAB)
 #define SSNIP LGUI(LSFT(KC_S)) // GUI+SHIFT+S for snipping tool
 #define SH_SLS RSFT_T(KC_SLSH)
+#define SH_BSLS RSFT_T(KC_BSLS)
 
 #define CLFT LCTL(KC_LEFT)
 #define CRGT LCTL(KC_RIGHT)
@@ -93,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ES_TSK,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   SH_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  ABRC,    KC_MPLY,  KC_N,    KC_M,    COM_PR,  DOT_PR,  KC_SLSH, SH_SLS,
+  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  ABRC,    KC_MPLY,  KC_N,    KC_M,    COM_PR,  DOT_PR,  ABRC,    SH_SLS,
                             RAISE,    KC_LALT, LOWER, KC_SPC,  KC_BSPC,  KC_ENT,  KC_RGUI, KC_DELETE
 ),
 /* LOWER
@@ -113,8 +114,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_LOWER] = LAYOUT(
   TAB_RES, TABL,    TABCLOSE,TABR,    QUIT,    RE_CACHE,                   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
   _______, FOC_1,   FOC_2,   FOC_3,   FOC_4,   AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
-  SHALTAB, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  SSNIP,                      _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______,  _______,
-  _______, DRK_BANG,KC_AT,   VIS_HASH,LNKPST,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  _______, KC_BSLASH,_______,
+  SHALTAB, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  SSNIP,                      _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______, _______,
+  _______, DRK_BANG,KC_AT,   VIS_HASH,LNKPST,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  _______, _______, SH_BSLS,
                              _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 /* RAISE
@@ -154,8 +155,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                   `----------------------------'           '------''--------------------'
  */
   [_ADJUST] = LAYOUT(
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  RGB_MOD, RGB_RMOD,RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_HUI, RGB_HUD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                              _______, _______, _______, _______, _______,  _______, _______, _______
@@ -212,7 +213,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_TAB);
             }
           } else if (record->event.pressed) {
-              tap_code16(KC_LSFT); // Intercept hold function to send Ctrl-V
+              register_code(KC_LSFT); // Intercept hold function to send Ctrl-V
+          }
+          else {
+              unregister_code(KC_LSFT);
           }
           return false;
         case ES_TSK:
@@ -411,9 +415,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             }
         }else if(IS_LAYER_ON(_LOWER)){
             if (clockwise){
-                rgb_matrix_increase_val();
+                tap_code(KC_WH_U);
             } else{
-                rgb_matrix_decrease_val();
+                tap_code(KC_WH_U);
             }
         }else{
             if (clockwise) {
