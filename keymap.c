@@ -144,13 +144,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case KVMONE:
           if (record->event.pressed) {
-              SEND_STRING(SS_TAP(X_SCROLLLOCK) SS_DELAY(20) SS_TAP(X_SCROLLLOCK) SS_DELAY(20) "1" SS_DELAY(20) "\n");  // SS_TAP(X_ENTER)
+              SEND_STRING(SS_TAP(X_SCROLLLOCK) SS_DELAY(20) SS_TAP(X_SCROLLLOCK) SS_DELAY(20) "1" SS_DELAY(20));  // SS_TAP(X_ENTER)
           } else{
           }
           return false;
         case KVMTWO:
           if (record->event.pressed) {
-              SEND_STRING(SS_TAP(X_SCROLLLOCK) SS_DELAY(20) SS_TAP(X_SCROLLLOCK) SS_DELAY(20) "2" SS_DELAY(20) "\n");  // SS_TAP(X_ENTER)
+              SEND_STRING(SS_TAP(X_SCROLLLOCK) SS_DELAY(20) SS_TAP(X_SCROLLLOCK) SS_DELAY(20) "2" SS_DELAY(20));  // SS_TAP(X_ENTER)
           } else{
           }
           return false;
