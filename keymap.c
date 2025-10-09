@@ -120,15 +120,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 [_RAISE] = LAYOUT(
-  RGB_MOD, RGB_RMOD,RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD,                     TD_RD,   _______, _______, _______, _______, QK_BOOT,
+  RM_NEXT, RM_PREV, RM_SATU, RM_SATD, RM_VALU, RM_VALD,                     TD_RD,   _______, _______, _______, _______, QK_BOOT,
   _______, VDLEFT,  SNAPUP,  VDRIGHT,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
   _______, SNAPLEFT,MAXIMIZE,SNAPRIGHT,_______, _______,                     _______, CLFT,    CDN,     CRGT,    _______, KC_PWR,
-  _______, VDTVIEW, SNAPDOWN,LOCK,     _______, _______,  RGB_TOG, KC_E   ,  _______, _______, _______, _______, _______, KC_SLEP,
+  _______, VDTVIEW, SNAPDOWN,LOCK,     _______, _______,  RM_TOGG, KC_E   ,  _______, _______, _______, _______, _______, KC_SLEP,
                              _______,  KVMONE,  KVMTWO,   _______, _______,  _______, _______, _______
 ),
   [_ADJUST] = LAYOUT(
-  RGB_MOD, RGB_RMOD,RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_HUI, RGB_HUD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  RM_NEXT, RM_PREV, RM_SATU, RM_SATD, RM_VALU, RM_VALD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RM_HUEU, RM_HUED,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                              _______, _______, _______, _______, _______,  _______, _______, _______
@@ -144,13 +144,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case KVMONE:
           if (record->event.pressed) {
-              SEND_STRING(SS_TAP(X_SCROLLLOCK) SS_DELAY(20) SS_TAP(X_SCROLLLOCK) SS_DELAY(20) "1" SS_DELAY(20));  // SS_TAP(X_ENTER)
+              SEND_STRING(SS_TAP(X_SCROLL_LOCK) SS_DELAY(20) SS_TAP(X_SCROLL_LOCK) SS_DELAY(20) "1" SS_DELAY(20));  // SS_TAP(X_ENTER)
           } else{
           }
           return false;
         case KVMTWO:
           if (record->event.pressed) {
-              SEND_STRING(SS_TAP(X_SCROLLLOCK) SS_DELAY(20) SS_TAP(X_SCROLLLOCK) SS_DELAY(20) "2" SS_DELAY(20));  // SS_TAP(X_ENTER)
+              SEND_STRING(SS_TAP(X_SCROLL_LOCK) SS_DELAY(20) SS_TAP(X_SCROLL_LOCK) SS_DELAY(20) "2" SS_DELAY(20));  // SS_TAP(X_ENTER)
           } else{
           }
           return false;
@@ -387,9 +387,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             }
         }else if(IS_LAYER_ON(_LOWER)){
             if (clockwise){
-                tap_code(KC_WH_U);
+                tap_code(MS_WHLU);
             } else{
-                tap_code(KC_WH_D);
+                tap_code(MS_WHLD);
             }
         }else{
             if (clockwise) {
