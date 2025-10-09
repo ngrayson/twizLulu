@@ -21,5 +21,7 @@
 #define ENABLE_RGB_MATRIX_BAND_VAL
 #define RGBLIGHT_SLEEP
 
+#define HOLD_ON_OTHER_KEY_PRESS
+
 // #define EE_HANDS
 // #define MASTER_LEFT
