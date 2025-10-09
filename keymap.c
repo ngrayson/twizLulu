@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ES_TSK,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   SH_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_INS,  KC_MPLY,  KC_N,    KC_M,    COM_PR,  DOT_PR,  ABRC,    SH_SLS,
+  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_INS,  KC_MPLY,  KC_N,    KC_M,    KC_COMM, KC_DOT,  ABRC,    SH_SLS,
                             RAISE,    KC_LALT, LOWER, KC_SPC,  KC_BSPC,  KC_ENT,  KC_RGUI, KC_DELETE
 ),
 /* LOWER
@@ -208,16 +208,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
         case DOT_PR:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_DOT); // Intercept tap function to send Ctrl-C
+              tap_code16_delay(KC_DOT, 80); // Intercept tap function to send Ctrl-C
           } else if (record->event.pressed) {
-              tap_code16(KC_RPRN); // Intercept hold function to send Ctrl-V
+              tap_code16_delay(KC_RPRN, 80); // Intercept hold function to send Ctrl-V
           }
           return false;
         case COM_PR:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_COMM); // Intercept tap function to send Ctrl-C
+              tap_code16_delay(KC_COMM, 80); // Intercept tap function to send Ctrl-C
           } else if (record->event.pressed) {
-              tap_code16(KC_LPRN); // Intercept hold function to send Ctrl-V
+              tap_code16_delay(KC_LPRN, 80); // Intercept hold function to send Ctrl-V
           }
           return false;
         case PLS_MIN:
