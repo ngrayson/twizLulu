@@ -1,8 +1,11 @@
 // Copyright 2022 Cole Smith <cole@boadsource.xyz>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-// Elite-C (ATmega32U4) controllers. Flash each half on its own: plug in only that half,
-// press reset once (or QK_BOOT on RAISE), then: qmk flash -kb boardsource/lulu/avr -km twizLulu
+// Elite-C (ATmega32U4) controllers. Flash each half on its own, no reset button needed:
+// unplug USB and TRRS, hold that half's outermost top key (Esc on the left, = on the right),
+// plug only that half in (bootmagic: it enters the DFU bootloader), then:
+//   qmk flash -kb boardsource/lulu/avr -km twizLulu
+// RAISE + top-right (QK_BOOT) also works, but only resets the half on USB.
 
 #include QMK_KEYBOARD_H
 
