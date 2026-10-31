@@ -54,17 +54,8 @@ uint16_t alt_tab_timer = 0;
 
 
 
-#define VDLEFT LGUI(LCTL(KC_LEFT))
-#define VDRIGHT LGUI(LCTL(KC_RIGHT))
-#define SNAPUP LGUI(KC_UP)
-#define SNAPLEFT LGUI(KC_LEFT)
-#define SNAPDOWN LGUI(KC_DOWN)
-#define SNAPRIGHT LGUI(KC_RIGHT)
-#define LOCK LGUI(KC_L)
-#define MAXIMIZE HYPR(KC_M)
 #define AUDIOSRC MEH(KC_G)
 #define PIK_WIN LCA(KC_TAB)
-#define VDTVIEW LGUI(KC_TAB)
 #define SH_TAB LSFT_T(KC_TAB)
 #define SSNIP LGUI(LSFT(KC_S)) // GUI+SHIFT+S for snipping tool
 #define SH_SLS RSFT_T(KC_SLSH)
@@ -87,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| INS   |    | MPLY  |------+------+------+------+------+------|
  * | CTL  |  Z   |  X   |  C   |  V   |  B   |-------|    |-------|  N   |  M   | ,+(  |  .+) |  [+] | SH+/ |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   | RAISE| LALT |LOWER | /Space  /       \BackSP\  |Enter | RGUI | DEL  |
+ *                   | RAISE| LGUI | LALT | /Space  /       \BackSP\  |Enter |LOWER | DEL  |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
@@ -96,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   SH_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_INS,  KC_MPLY,  KC_N,    KC_M,    KC_COMM, KC_DOT,  ABRC,    SH_SLS,
-                            RAISE,    KC_LALT, LOWER, KC_SPC,  KC_BSPC,  KC_ENT,  KC_RGUI, KC_DELETE
+                            RAISE,    KC_LGUI, KC_LALT, KC_SPC,  KC_BSPC,  KC_ENT,  LOWER, KC_DELETE
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -121,9 +112,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 [_RAISE] = LAYOUT(
   RM_NEXT, RM_PREV, RM_SATU, RM_SATD, RM_VALU, RM_VALD,                     TD_RD,   _______, _______, _______, _______, QK_BOOT,
-  _______, VDLEFT,  SNAPUP,  VDRIGHT,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
-  _______, SNAPLEFT,MAXIMIZE,SNAPRIGHT,_______, _______,                     _______, CLFT,    CDN,     CRGT,    _______, KC_PWR,
-  _______, VDTVIEW, SNAPDOWN,LOCK,     _______, _______,  RM_TOGG, KC_E   ,  _______, _______, _______, _______, _______, KC_SLEP,
+  _______, _______, _______, _______,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
+  _______, _______, _______, _______,  _______, _______,                     _______, CLFT,    CDN,     CRGT,    _______, KC_PWR,
+  _______, _______, _______, _______,  _______, _______,  RM_TOGG, KC_E   ,  _______, _______, _______, _______, _______, KC_SLEP,
                              _______,  KVMONE,  KVMTWO,   _______, _______,  _______, _______, _______
 ),
   [_ADJUST] = LAYOUT(
