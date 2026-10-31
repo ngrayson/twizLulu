@@ -1,9 +1,8 @@
 // Copyright 2022 Cole Smith <cole@boadsource.xyz>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-// flash the left half with: make --jobs=1 boardsource/lulu/rp2040:twizLulu:uf2-split-left
-// and the right half with: make --jobs=1 boardsource/lulu/rp2040:twizLulu:uf2-split-right
-// once this has been done once you can use: make --jobs=1 boardsource/lulu/rp2040:twizLulu:flash
+// Elite-C (ATmega32U4) controllers. Flash each half on its own: plug in only that half,
+// press reset once (or QK_BOOT on RAISE), then: qmk flash -kb boardsource/lulu/avr -km twizLulu
 
 #include QMK_KEYBOARD_H
 
@@ -23,20 +22,12 @@ uint16_t alt_tab_timer = 0;
 
 
 #define ES_TSK LT(0,KC_1)
-#define DOT_PR LT(0,KC_2)
-#define COM_PR LT(0,KC_3)
 #define TABL LT(0,KC_F1)
 #define TABR LT(0,KC_F2)
 #define TABCLOSE LT(0,KC_F3)
-#define PLS_MIN LT(0,KC_F4)
 #define RE_CACHE LT(0,KC_F5)
 #define QUIT LT(0,KC_6)
-#define MEN_AST LT(0,KC_TAB)
-#define FOC_1 LT(0,KC_A)
-#define FOC_2 LT(0,KC_S)
-#define FOC_3 LT(0,KC_D)
-#define FOC_4 LT(0,KC_F)
-#define AUD_5 LT(0,KC_H) // 6 on tap, toggle audio source on hold
+#define AUD_5 LT(0,KC_H) // 5 on tap, toggle audio source on hold
 #define TD_RD LT(0,KC_G) // macro for labelling in gmail
 #define WT_SV LT(0,KC_J) // macro for labelling in gmail
 #define ABRC LT(0,KC_K) // Brackets (ambidexterous)
@@ -46,7 +37,6 @@ uint16_t alt_tab_timer = 0;
 #define DRK_BANG LT(0,KC_Z)
 #define VIS_HASH LT(0,KC_C)
 #define TAB_RES LT(0,KC_ESC)
-#define ALT_TAB LT(0, KC_F22) // alt tab with timeout functionality
 #define SHALTAB LT(0, KC_F21) // when held: shift, when tapped: alt tab with timeout functionality
 #define KVMONE LT(0,KC_LGUI)
 #define KVMTWO LT(0,KC_RGUI)
@@ -55,7 +45,6 @@ uint16_t alt_tab_timer = 0;
 
 
 #define AUDIOSRC MEH(KC_G)
-#define PIK_WIN LCA(KC_TAB)
 #define SH_TAB LSFT_T(KC_TAB)
 #define SSNIP LGUI(LSFT(KC_S)) // GUI+SHIFT+S for snipping tool
 #define SH_SLS RSFT_T(KC_SLSH)
@@ -68,15 +57,15 @@ uint16_t alt_tab_timer = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* QWERTY
- *  + denotes a tap + hold key
+ *  + denotes a tap + hold key (hold action in process_record_user)
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * | ESC+ |  1   |  2   |  3   |  4   |  5   |                    |  6   |  7   |  8   |  9   | 10   |  =   |
+ * | ESC+ |  1   |  2   |  3   |  4   |  5   |                    |  6   |  7   |  8   |  9   |  0   |  =   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |  `   |  Q   |  W   |  E   |  R   |  T   |                    |  Y   |  U   |  I   |  O   |  P   |  -   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |SH+TAB|  A   |  S   |  D   |  F   |  G   |-------.    ,-------|  H   |  J   |  K   |   L  |  :   |  '   |
+ * |SH+TAB|  A   |  S   |  D   |  F   |  G   |-------.    ,-------|  H   |  J   |  K   |  L   |  ;   |  '   |
  * |------+------+------+------+------+------| INS   |    | MPLY  |------+------+------+------+------+------|
- * | CTL  |  Z   |  X   |  C   |  V   |  B   |-------|    |-------|  N   |  M   | ,+(  |  .+) |  [+] | SH+/ |
+ * | CTL  |  Z   |  X   |  C   |  V   |  B   |-------|    |-------|  N   |  M   |  ,   |  .   |  [+] | SH+/ |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   | RAISE| LGUI | LALT | /Space  /       \BackSP\  |Enter |LOWER | DEL  |
  *                   |      |      |      |/       /         \      \ |      |      |      |
@@ -91,13 +80,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * |TABRES| TABL+|CTRLW+| TABR+| F4+  | CTRF5|                    |  F6  |  F7  |  F8  | F9   | F10  | F11  |
+ * |TABRS+| TABL+|CTRLW+| TABR+|  F4+ |  F5+ |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |  1+  |  2+  |  3+  |  4+  |  5+  |                    |  6   |  7   |  UP  |  9   |  0   | F12  |
+ * |      |  1   |  2   |  3   |  4   |  5+  |                    |  6   |  7   |  UP  |  9   |  0   | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |SHALTAB| HOME| PGDN | PGUP | END  | SSNIP|-------.    ,-------|      | LEFT | DOWN | RIGHT|      |      |
+ * |ALTAB+| HOME | PGDN | PGUP | END  | SNIP |-------.    ,-------|      | LEFT | DOWN | RIGHT|      |      |
  * |------+------+------+------+------+------| MSEL  |    |       |------+------+------+------+------+------|
- * |      | !+   |  @   |  #+  |LINKPST|  %  |-------|    |-------|   ^  |   &  |   *  |   *  |      |   \  |
+ * |      |  !+  |  @   |  #+  |LNKPST|  %   |-------|    |-------|  ^   |  &   |  *   |      |      | SH+\ |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   |      |      |      | /       /       \      \  |      |      |      |
  *                   |      |      |      |/       /         \      \ |      |      |      |
@@ -105,11 +94,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT(
   TAB_RES, TABL,    TABCLOSE,TABR,    QUIT,    RE_CACHE,                   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-  _______, FOC_1,   FOC_2,   FOC_3,   FOC_4,   AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
+  _______, KC_1,    KC_2,    KC_3,    KC_4,    AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
   SHALTAB, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  SSNIP,                      _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______, _______,
   _______, DRK_BANG,KC_AT,   VIS_HASH,LNKPST,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  _______, _______, SH_BSLS,
                              _______, _______, _______,  _______, _______, _______, _______, _______
 ),
+/* RAISE
+ * ,-----------------------------------------.                    ,-----------------------------------------.
+ * | RGB> | RGB< | SAT+ | SAT- | VAL+ | VAL- |                    |TODO+ |      |      |      |      | BOOT |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |                    |WAIT+ |      | C-UP |      |      | WAKE |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |-------.    ,-------|      |C-LEFT| C-DN |C-RGHT|      | PWR  |
+ * |------+------+------+------+------+------|RGB TOG|    |   E   |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      | SLEEP|
+ * `-----------------------------------------/       /     \      \-----------------------------------------'
+ *                   |      | KVM1 | KVM2 | /       /       \      \  |      |      |      |
+ *                   |      |      |      |/       /         \      \ |      |      |      |
+ *                   `----------------------------'           '------''--------------------'
+ */
 [_RAISE] = LAYOUT(
   RM_NEXT, RM_PREV, RM_SATU, RM_SATD, RM_VALU, RM_VALD,                     TD_RD,   _______, _______, _______, _______, QK_BOOT,
   _______, _______, _______, _______,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
@@ -117,6 +120,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______,  _______, _______,  RM_TOGG, KC_E   ,  _______, _______, _______, _______, _______, KC_SLEP,
                              _______,  KVMONE,  KVMTWO,   _______, _______,  _______, _______, _______
 ),
+/* ADJUST (LOWER + RAISE)
+ * ,-----------------------------------------.                    ,-----------------------------------------.
+ * | RGB> | RGB< | SAT+ | SAT- | VAL+ | VAL- |                    |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |      |      |      |      | HUE+ | HUE- |                    |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |-------.    ,-------|      |      |      |      |      |      |
+ * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
+ * `-----------------------------------------/       /     \      \-----------------------------------------'
+ *                   |      |      |      | /       /       \      \  |      |      |      |
+ *                   |      |      |      |/       /         \      \ |      |      |      |
+ *                   `----------------------------'           '------''--------------------'
+ */
   [_ADJUST] = LAYOUT(
   RM_NEXT, RM_PREV, RM_SATU, RM_SATD, RM_VALU, RM_VALD,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RM_HUEU, RM_HUED,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -125,6 +142,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              _______, _______, _______, _______, _______,  _______, _______, _______
   )
 };
+
+// Hold-on-other-key only for the shift tap-holds; elsewhere a fast roll must stay a tap.
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case SH_TAB:
+        case SH_SLS:
+        case SH_BSLS:
+        case SHALTAB:
+            return true;
+        default:
+            return false;
+    }
+}
 
 layer_state_t layer_state_set_user(layer_state_t state) {
    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
@@ -151,18 +181,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } else {
           }
           return false;
-        case ALT_TAB:
-            if (record->event.pressed) {
-                if (!is_alt_tab_active) {
-                    is_alt_tab_active = true;
-                    register_code(KC_LALT);
-                }
-                alt_tab_timer = timer_read();
-                tap_code16(KC_TAB);
-            } else {
-                unregister_code(KC_TAB);
-            }
-            break;
         case SHALTAB:
           if (record->tap.count && record->event.pressed) {
              if (record->event.pressed) { // alt tab timer active
@@ -176,7 +194,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_TAB);
             }
           } else if (record->event.pressed) {
-              register_code(KC_LSFT); // Intercept hold function to send Ctrl-V
+              register_code(KC_LSFT);
           }
           else {
               unregister_code(KC_LSFT);
@@ -184,136 +202,80 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
         case ES_TSK:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_ESC); // Intercept tap function to send Ctrl-C
+              tap_code16(KC_ESC);
           } else if (record->event.pressed) {
-              tap_code16(LCTL(LSFT(KC_ESC))); // Intercept hold function to send Ctrl-V
+              tap_code16(LCTL(LSFT(KC_ESC)));
           }
           return false;
 
         case ABRC:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_LBRC); // Intercept tap function to send Ctrl-C
+              tap_code16(KC_LBRC);
           } else if (record->event.pressed) {
-              tap_code16(KC_RBRC); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case DOT_PR:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16_delay(KC_DOT, 80); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16_delay(KC_RPRN, 80); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case COM_PR:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16_delay(KC_COMM, 80); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16_delay(KC_LPRN, 80); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case PLS_MIN:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_EQL); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16(KC_MINS); // Intercept hold function to send Ctrl-V
+              tap_code16(KC_RBRC);
           }
           return false;
         case TAB_RES:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(RCTL(RSFT(KC_T))); // Intercept tap function to send Ctrl-C
+              tap_code16(RCTL(RSFT(KC_T)));
           } else if (record->event.pressed) {
-              tap_code16(KC_F); // Intercept hold function to send Ctrl-V
+              tap_code16(KC_F);
           }
           return false;
         case TABL:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(RCTL(RSFT(KC_TAB))); // Intercept tap function to send Ctrl-C
+              tap_code16(RCTL(RSFT(KC_TAB)));
           } else if (record->event.pressed) {
-              tap_code16(KC_F1); // Intercept hold function to send Ctrl-V
+              tap_code16(KC_F1);
           }
           return false;
         case TABCLOSE:
           if (record->tap.count && record->event.pressed) {
-            tap_code16(RCTL(KC_W)); // Intercept tap function to send Ctrl-C
+            tap_code16(RCTL(KC_W));
           } else if (record->event.pressed) {
-              tap_code16(KC_F2); // Intercept hold function to send Ctrl-V
+              tap_code16(KC_F2);
           }
           return false;
         case TABR:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(RCTL(KC_TAB)); // Intercept tap function to send Ctrl-C
+              tap_code16(RCTL(KC_TAB));
           } else if (record->event.pressed) {
-              tap_code16(KC_F3); // Intercept hold function to send Ctrl-V
+              tap_code16(KC_F3);
           }
           return false;
         case RE_CACHE:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_F5); // Intercept tap function to send Ctrl-C
+              tap_code16(KC_F5);
           } else if (record->event.pressed) {
-              tap_code16(RCTL(KC_F5)); // Intercept hold function to send Ctrl-V
+              tap_code16(RCTL(KC_F5));
           }
           return false;
         case QUIT:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_F4); // Intercept tap function to send Ctrl-C
+              tap_code16(KC_F4);
           } else if (record->event.pressed) {
-              tap_code16(RALT(KC_F4)); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case MEN_AST:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_ASTR); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16(LGUI(KC_X)); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case FOC_1:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_1); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16(LGUI(KC_1)); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case FOC_2:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_2); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16(LGUI(KC_2)); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case FOC_3:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_3); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16(LGUI(KC_3)); // Intercept hold function to send Ctrl-V
-          }
-          return false;
-        case FOC_4:
-          if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_4); // Intercept tap function to send Ctrl-C
-          } else if (record->event.pressed) {
-              tap_code16(LGUI(KC_4)); // Intercept hold function to send Ctrl-V
+              tap_code16(RALT(KC_F4));
           }
           return false;
         case AUD_5:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_5); // Intercept tap function to send Ctrl-C
+              tap_code16(KC_5);
           } else if (record->event.pressed) {
-              tap_code16(AUDIOSRC); // Intercept hold function to send Ctrl-V
+              tap_code16(AUDIOSRC);
           }
           return false;
         case DRK_BANG:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_EXLM); // Intercept tap function to send Ctrl-C
+              tap_code16(KC_EXLM);
           } else if (record->event.pressed) {
-              tap_code16(LSFT(LALT(KC_F))); // Intercept hold function to send Ctrl-V
+              tap_code16(LSFT(LALT(KC_F)));
           }
           return false;
         case VIS_HASH:
           if (record->tap.count && record->event.pressed) {
-              tap_code16(KC_HASH); // Intercept tap function to send Ctrl-C
+              tap_code16(KC_HASH);
           } else if (record->event.pressed) {
-              tap_code16(LGUI(LALT(KC_V))); // Intercept hold function to send Ctrl-V
+              tap_code16(LGUI(LALT(KC_V)));
           }
           return false;
         case TD_RD:
@@ -390,6 +352,6 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             }
         }
     }
-    return true;
+    return false; // skip lulu.c's encoder_update_kb, which would also send PgUp/PgDn
 }
 #endif
