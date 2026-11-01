@@ -3,7 +3,8 @@
 
 // Elite-C (ATmega32U4) controllers. Flash each half on its own, no reset button needed:
 // unplug USB and TRRS, hold that half's outermost top key (Esc on the left, = on the right),
-// plug only that half in (bootmagic: it enters the DFU bootloader), then:
+// plug only that half in (bootmagic: it enters the DFU bootloader). Easiest: run flash.sh <hex> first,
+// type the sudo password, then do the unplugging; it waits and flashes. Or, once in the bootloader:
 //   qmk flash -kb boardsource/lulu/avr -km twizLulu
 // RAISE + top-right (QK_BOOT) also works, but only resets the half on USB.
 
