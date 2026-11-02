@@ -3,7 +3,8 @@
 
 // Elite-C (ATmega32U4) controllers. Flash each half on its own, no reset button needed:
 // unplug USB and TRRS, hold that half's outermost top key (Esc on the left, = on the right),
-// plug only that half in (bootmagic: it enters the DFU bootloader), then:
+// plug only that half in (bootmagic: it enters the DFU bootloader). Easiest: run flash.sh <hex> first,
+// type the sudo password, then do the unplugging; it waits and flashes. Or, once in the bootloader:
 //   qmk flash -kb boardsource/lulu/avr -km twizLulu
 // RAISE + top-right (QK_BOOT) also works, but only resets the half on USB.
 
@@ -87,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |  1   |  2   |  3   |  4   |  5+  |                    |  6   |  7   |  UP  |  9   |  0   | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |ALTAB+| HOME | PGDN | PGUP | END  | SNIP |-------.    ,-------|      | LEFT | DOWN | RIGHT|      |      |
+ * |ALTAB+|      |      |      |      | SNIP |-------.    ,-------|      | LEFT | DOWN | RIGHT|      |      |
  * |------+------+------+------+------+------| MSEL  |    |       |------+------+------+------+------+------|
  * |      |  !+  |  @   |  #+  |LNKPST|  %   |-------|    |-------|  ^   |  &   |  *   |      |      | SH+\ |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -98,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_LOWER] = LAYOUT(
   TAB_RES, TABL,    TABCLOSE,TABR,    QUIT,    RE_CACHE,                   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
   _______, KC_1,    KC_2,    KC_3,    KC_4,    AUD_5,                      KC_6,    KC_7,    KC_UP,   KC_9,    KC_0,    KC_F12,
-  SHALTAB, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  SSNIP,                      _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______, _______,
+  SHALTAB, _______, _______, _______, _______, SSNIP,                      _______, KC_LEFT, KC_DOWN, KC_RIGHT,_______, _______,
   _______, DRK_BANG,KC_AT,   VIS_HASH,LNKPST,  KC_PERC,  KC_MSEL, _______, KC_CIRC,KC_AMPR, KC_ASTR,  _______, _______, SH_BSLS,
                              _______, _______, _______,  _______, _______, _______, _______, _______
 ),
@@ -106,9 +107,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * | RGB> | RGB< | SAT+ | SAT- | VAL+ | VAL- |                    |TODO+ |      |      |      |      | BOOT |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |      |      |                    |WAIT+ |      | C-UP |      |      | WAKE |
+ * |      |      | PGUP |      |      |      |                    |WAIT+ |      | C-UP |      |      | WAKE |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------.    ,-------|      |C-LEFT| C-DN |C-RGHT|      | PWR  |
+ * |      | HOME | PGDN | END  |      |      |-------.    ,-------|      |C-LEFT| C-DN |C-RGHT|      | PWR  |
  * |------+------+------+------+------+------|RGB TOG|    |   E   |------+------+------+------+------+------|
  * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      | SLEEP|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -118,8 +119,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = LAYOUT(
   RM_NEXT, RM_PREV, RM_SATU, RM_SATD, RM_VALU, RM_VALD,                     TD_RD,   _______, _______, _______, _______, QK_BOOT,
-  _______, _______, _______, _______,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
-  _______, _______, _______, _______,  _______, _______,                     _______, CLFT,    CDN,     CRGT,    _______, KC_PWR,
+  _______, _______, KC_PGUP, _______,  _______, _______,                     WT_SV,   _______, CUP,     _______, _______, KC_WAKE,
+  _______, KC_HOME, KC_PGDN, KC_END,   _______, _______,                     _______, CLFT,    CDN,     CRGT,    _______, KC_PWR,
   _______, _______, _______, _______,  _______, _______,  RM_TOGG, KC_E   ,  _______, _______, _______, _______, _______, KC_SLEP,
                              _______,  KVMONE,  KVMTWO,   _______, _______,  _______, _______, _______
 ),
